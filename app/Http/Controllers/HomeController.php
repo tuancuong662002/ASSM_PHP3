@@ -10,9 +10,19 @@ class HomeController extends Controller
 {
     //
      function index(){
-         $DMs = DB::table('danh_mucs')->get();
+        $DMs = DB::table('danh_mucs')->get();
+        $TOP_FAV =  DB::table('tintuc')->orderBy('LuotXem' , 'desc')->limit(5)->get();
+        $TT_NEW =   DB::table('tintuc')->orderBy('NgayDang' , 'desc')->limit(2)->get();
+        $TT_NEWS =  DB::table('tintuc')->orderBy('NgayDang' , 'desc')->get();
+        $TOP_FAVS = DB::table('tintuc')->orderBy('LuotXem' , 'desc')->get();
+        $ALL = DB::table('tintuc')->get();
           return view('clients.home' ,[
-              'DMs' => $DMs
+              'DMs' => $DMs,
+               'TOP_FAV' => $TOP_FAV,
+                'TT_NEW' => $TT_NEW,
+                'TT_NEWS' => $TT_NEWS,
+                'TOP_FAVS' => $TOP_FAVS,
+                'ALL' => $ALL,
           ]);
      }
      function category($MaDM){
@@ -30,6 +40,11 @@ class HomeController extends Controller
       function detail($MaTin){
         $DMs = DB::table('danh_mucs')->get();
         $tt = DB::table('tintuc')->where('MaTin' , $MaTin)->first();
+        $tinTucCungDanhMuc = DB::table('tintuc')
+    ->where('MaDM', $tt->MaDM)
+    ->where('MaTin', '!=', $MaTin) 
+    ->orderBy('NgayDang', 'desc')->limit(15)
+    ->get();
        $comments = DB::table('binhluan')
     ->join('users', 'binhluan.MaTK', '=', 'users.id')
     ->where('binhluan.MaTin', $MaTin)
@@ -44,6 +59,7 @@ class HomeController extends Controller
             'DMs' => $DMs,
             'tt' => $tt,
             'comments' => $comments,
+            'tinTucCungDanhMuc' => $tinTucCungDanhMuc 
         ]);
       }
       public function store_comment(Request $request)
@@ -61,6 +77,25 @@ class HomeController extends Controller
          'updated_at' => now(),
 ]);
 
-   return redirect()->route('news.detail', ['MaTin' => $request->MaTin])->with('success', 'Bình luận thành công!');
+   return redirect()->route('news.detail', ['MaTin' => $request->MaTin ])->with('success', 'Bình luận thành công!');
+       }
+
+       function search(Request $request){
+        {
+             $DMs = DB::table('danh_mucs')->get();
+             $keyword = $request->input('keyword');
+            if (empty($keyword)) 
+                return redirect()->back()->with('error', 'Vui lòng nhập từ khóa tìm kiếm.');
+             $results = DB::table('tintuc')
+                ->where('TieuDe', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('XemTruoc', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('NoiDung', 'LIKE', '%' . $keyword . '%')
+                ->get();
+
+            return view('clients.ketqua' , [
+                'DMs' => $DMs,
+                'results' => $results,
+            ]);
+      }
        }
 }

@@ -45,6 +45,10 @@ Route::get('/category/{MaDM}',  [HomeController::class, 'category'])->name('cate
 Route::get('/newsDetail/{MaTin}',  [HomeController::class, 'detail'])->name('news.detail');
 
 Route::post('/comment', [HomeController::class, 'store_comment'])->middleware('auth' , 'verified')->name('comment');
+Route::get('/tintuc/search', [HomeController::class, 'search'])->name('tintuc.search');
+
+Route::get('api/tintuc/danhmuc/{id}', [TinTucController::class, 'getTinTucByDanhMuc']);
+Route::get('api/tintuc/{id}', [TinTucController::class, 'getChiTietTinTuc']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

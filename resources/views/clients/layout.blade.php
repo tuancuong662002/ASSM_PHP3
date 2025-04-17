@@ -24,7 +24,60 @@
     <link rel="stylesheet" href="{{ asset('assets/css/nice-select.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <style>
+    .search-model-box {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 9999;
+    }
 
+    .search-model-box.active {
+        display: block;
+    }
+
+    .search-overlay {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .search-content {
+        position: relative;
+        width: 80%;
+        max-width: 600px;
+    }
+
+    .search-model-form input {
+        width: 100%;
+        padding: 15px 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 8px;
+        outline: none;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .search-close-btn {
+        position: absolute;
+        top: -40px;
+        right: 0;
+        font-size: 32px;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.2s;
+    }
+
+    .search-close-btn:hover {
+        transform: scale(1.2);
+        color: #ff4d4f;
+    }
     </style>
 </head>
 
@@ -42,115 +95,74 @@
     </div>
     <!-- Preloader Start -->
     <header>
-        <!-- Header Start -->
         <div class="header-area">
-            <div class="main-header ">
-                <div class="header-top black-bg d-none d-sm-block">
-                    <div class="container">
-                        <div class="col-xl-12">
-                            <div class="row d-flex justify-content-between align-items-center">
-                                <div class="header-info-left">
-                                    <ul>
-                                        <li class="title"><span class="flaticon-energy"></span> trending-title</li>
-                                        <li>Class property employ ancho red multi level mansion</li>
-                                    </ul>
-                                </div>
-                                <div class="header-info-right">
-                                    <ul class="header-date">
-                                        <li><span class="flaticon-calendar"></span> +880166 253 232</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="header-mid gray-bg">
-                    <div class="container">
-                        <div class="row d-flex align-items-center">
-                            <!-- Logo -->
-                            <div class="col-xl-3 col-lg-3 col-md-3 d-none d-md-block">
-                                <div class="logo">
-                                    <a href="index.html"> <img src="{{ asset('assets/img/logo/logo.png') }}" alt=""></a>
-                                </div>
-                            </div>
-                            <div class="col-xl-9 col-lg-9 col-md-9">
-                                <div class="header-banner f-right ">
-                                    <img src="{{ asset('assets/img/gallery/header_card.png') }}" alt="">
+            <div class="main-header">
+                <!-- Top -->
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="header-bottom header-sticky">
+
+                <!-- Mid -->
+
+
+                <!-- Bottom -->
+                <div class="header-bottom header-sticky py-2">
                     <div class="container">
                         <div class="row align-items-center">
-                            <div class="col-xl-8 col-lg-8 col-md-12 header-flex">
-                                <!-- sticky -->
-                                <div class="sticky-logo">
-                                    <a href="index.html"><img src="{{ asset('assets/img/logo/logo.png') }}" alt=""></a>
-                                </div>
-                                <!-- Main-menu -->
-                                <div class="main-menu d-none d-md-block">
-                                    <nav>
-                                        <ul id="navigation">
-                                            <li><a href="{{url('/')}}">HOME</a></li>
+                            <!-- Navigation -->
+                            <div class="col-md-8">
+                                <div class="d-flex align-items-center gap-4">
+                                    <!-- Sticky Logo -->
+                                    <a href="{{ url('/') }}">
+                                        <img src="{{ asset('assets/img/logo/logo.png') }}" alt="Logo"
+                                            style="height: 40px;">
+                                    </a>
+                                    <!-- Main Menu -->
+                                    <nav class="main-menu d-none d-md-block">
+                                        <ul id="navigation" class="d-flex gap-3 list-unstyled mb-0">
+                                            <li><a href="{{ url('/') }}">Trang Chủ</a></li>
                                             @foreach($DMs as $dm)
-                                            <li><a href="{{route('category' ,$dm->MaDM)}}">{{$dm->TenDM}}</a></li>
+                                            <li><a href="{{ route('category', $dm->MaDM) }}">{{ $dm->TenDM }}</a></li>
                                             @endforeach
-                                            <li><a href=" #">Pages</a>
-                                                <ul class="submenu">
-                                                    <li><a href="blog.html">Blog</a></li>
-                                                    <li><a href="blog_details.html">Blog Details</a></li>
-                                                    <li><a href="elements.html">Element</a></li>
-                                                </ul>
-                                            </li>
-
                                         </ul>
                                     </nav>
                                 </div>
                             </div>
-                            <div class="col-xl-4 col-lg-4 col-md-4">
-                                <div class="header-right f-right d-none d-lg-block">
-                                    <!-- Heder social -->
-                                    <ul class="header-social">
-                                        @if(Auth::check())
-                                        <li>
-                                            <span
-                                                style="font-size: 12px; margin-left: 4px;">{{ Auth::user()->name }}</span>
-                                        </li>
-                                        <li>
-                                            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                                                @csrf
-                                                <button type="submit"
-                                                    style="background: none; border: none; color: #007bff; cursor: pointer;">Đăng
-                                                    xuất</button>
-                                            </form>
-                                        </li>
-                                        @else
-                                        <li>
-                                            <a href="{{ route('login') }}"><i class="fas fa-user"></i> Đăng nhập</a>
-                                        </li>
-                                        @endif
-                                    </ul>
 
-                                    <!-- Search Nav -->
-                                    <div class="nav-search search-switch">
-                                        <i class="fa fa-search"></i>
+                            <!-- User + Search -->
+                            <div class="col-md-4 text-end">
+                                <div class="d-flex justify-content-end align-items-center gap-3">
+                                    @if(Auth::check())
+                                    <div class="d-flex align-items-center gap-2">
+                                        <img src="{{ asset('images/' . Auth::user()->avatar) }}" alt="Avatar"
+                                            class="rounded-circle" width="28" height="28" style="object-fit: cover;">
+                                        <span class="small text-muted"><strong>{{ Auth::user()->name }}</strong></span>
+                                    </div>
+                                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Đăng xuất</button>
+                                    </form>
+                                    @else
+                                    <a href="{{ route('login') }}" class="btn btn-sm btn-outline-primary">Đăng nhập</a>
+                                    @endif
+
+                                    <!-- Search -->
+                                    <div class="nav-search search-switch" style="cursor: pointer;">
+                                        <i class="fa fa-search text-dark"></i>
                                     </div>
                                 </div>
                             </div>
+
                             <!-- Mobile Menu -->
-                            <div class="col-12">
-                                <div class="mobile_menu d-block d-md-none"></div>
+                            <div class="col-12 d-md-none mt-2">
+                                <div class="mobile_menu"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Header End -->
     </header>
+
+
     <main>
         @yield('content')
         <!-- Main content goes here -->
@@ -171,10 +183,10 @@
                                     </div>
                                     <div class="footer-tittle">
                                         <div class="footer-pera">
-                                            <p class="info1">Lorem ipsum dolor sit amet, nsectetur adipiscing elit, sed
+                                            <!-- <p class="info1">Lorem ipsum dolor sit amet, nsectetur adipiscing elit, sed
                                                 do eiusmod tempor incididunt ut labore.</p>
                                             <p class="info2">198 West 21th Street, Suite 721 New York,NY 10010</p>
-                                            <p class="info2">Phone: +95 (0) 123 456 789 Cell: +95 (0) 123 456 789</p>
+                                            <p class="info2">Phone: +95 (0) 123 456 789 Cell: +95 (0) 123 456 789</p> -->
                                         </div>
                                     </div>
                                 </div>
@@ -183,7 +195,7 @@
                         <div class="col-xl-4 col-lg-4 col-md-5 col-sm-7">
                             <div class="single-footer-caption mb-50">
                                 <div class="footer-tittle">
-                                    <h4>Popular post</h4>
+                                    <h4>Thôn tin về chúng tôi</h4>
                                 </div>
                                 <!-- Popular post -->
                                 <div class="whats-right-single mb-20">
@@ -191,7 +203,8 @@
                                         <img src="{{ asset('assets/img/gallery/footer_post1.png') }}" alt="">
                                     </div>
                                     <div class="whats-right-cap">
-                                        <h4><a href="latest_news.html">Scarlett’s disappointment at latest accolade</a>
+                                        <h4><a href="latest_news.html">hãy để lại thông tin để chúng tôi có thể liên
+                                                lạc</a>
                                         </h4>
                                         <p>Jhon | 2 hours ago</p>
                                     </div>
@@ -202,7 +215,7 @@
                                         <img src="{{ asset('assets/img/gallery/footer_post2.png') }}" alt="">
                                     </div>
                                     <div class="whats-right-cap">
-                                        <h4><a href="latest_news.html">Scarlett’s disappointment at latest accolade</a>
+                                        <h4><a href="latest_news.html"></a>
                                         </h4>
                                         <p>Jhon | 2 hours ago</p>
                                     </div>
@@ -213,7 +226,7 @@
                                         <img src="{{ asset('assets/img/gallery/footer_post3.png') }}" alt="">
                                     </div>
                                     <div class="whats-right-cap">
-                                        <h4><a href="latest_news.html">Scarlett’s disappointment at latest accolade</a>
+                                        <h4><a href="latest_news.html"></a>
                                         </h4>
                                         <p>Jhon | 2 hours ago</p>
                                     </div>
@@ -257,11 +270,13 @@
     </footer>
     <!-- Search model Begin -->
     <div class="search-model-box">
-        <div class="d-flex align-items-center h-100 justify-content-center">
-            <div class="search-close-btn">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Searching key.....">
-            </form>
+        <div class="search-overlay">
+            <div class="search-content">
+                <div class="search-close-btn" onclick="toggleSearch()">×</div>
+                <form action="{{ route('tintuc.search') }}" method="GET" class="search-model-form">
+                    <input type="text" id="search-input" name="keyword" placeholder=" Nhập từ khóa tìm kiếm..." />
+                </form>
+            </div>
         </div>
     </div>
     <!-- Search model end -->

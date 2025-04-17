@@ -1,25 +1,73 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quên mật khẩu</title>
+
+    <link rel="shortcut icon" href="assets/images/favicon.svg" />
+    <link rel="stylesheet" href="assets/fonts/bootstrap/bootstrap-icons.css" />
+    <link rel="stylesheet" href="{{ asset('admin/assets/css/main.min.css') }}" />
+</head>
+
+<body>
+    <!-- Container start -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-4 col-lg-5 col-sm-6 col-12">
+                <form method="POST" action="{{ route('password.email') }}" class="my-5">
+                    @csrf
+                    <div class="border border-dark rounded-2 p-4 mt-5">
+                        <div class="login-form">
+                            <!-- <a href="/" class="mb-4 d-flex">
+                                <img src="{{ asset('assets/images/logo-dark.svg') }}" class="img-fluid login-logo"
+                                    alt="Logo" />
+                            </a> -->
+
+                            <h5 class="fw-light mb-4">Khôi phục mật khẩu</h5>
+
+                            <p class="small text-muted mb-4">
+                                {{ __('Quên mật khẩu? Không sao cả. Vui lòng nhập email, chúng tôi sẽ gửi cho bạn một liên kết để đặt lại mật khẩu.') }}
+                            </p>
+
+                            {{-- Session Status --}}
+                            @if (session('status'))
+                            <div class="alert alert-success small">
+                                {{ session('status') }}
+                            </div>
+                            @endif
+
+                            {{-- Email --}}
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email" value="{{ old('email') }}"
+                                    required autofocus />
+                                @error('email')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- Submit --}}
+                            <div class="d-grid mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    Gửi liên kết đặt lại mật khẩu
+                                </button>
+                            </div>
+
+                            {{-- Back to login --}}
+                            <div class="text-center pt-4">
+                                <a href="{{ route('login') }}" class="text-blue text-decoration-underline">
+                                    Quay lại đăng nhập
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+    <!-- Container end -->
+</body>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('password.email') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+</html>

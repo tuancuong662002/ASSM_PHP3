@@ -22,8 +22,8 @@
                     <th>Hình Ảnh</th>
                     <th>Lượt Xem</th>
                     <th>Ngày Đăng</th>
-                    <th>Mã Danh Mục</th>
-                    <th>Mã Tài Khoản</th>
+                    <!-- <th>Mã Danh Mục</th>
+                    <th>Mã Tài Khoản</th> -->
                     <th>Hành Động</th>
                 </tr>
             </thead>
@@ -41,8 +41,8 @@
                     </td>
                     <td>{{ $tt->LuotXem }}</td>
                     <td>{{ $tt->NgayDang }}</td>
-                    <td>{{ $tt->MaDM }}</td>
-                    <td>{{ $tt->MaTK }}</td>
+                    <!-- <td>{{ $tt->MaDM }}</td>
+                    <td>{{ $tt->MaTK }}</td> -->
                     <td>
                         <a href="{{ route('tintuc.edit', $tt->MaTin) }}">
                             <button class="btn btn-warning btn-sm">Sửa</button>
